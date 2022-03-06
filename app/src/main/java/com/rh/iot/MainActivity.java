@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         @Override
         public boolean onGpioEdge(Gpio gpio) {
             try {
-                Log.d(TAG, "GPIO Name :" + gpio.getName() + "Value" + gpio.getValue());
+                Log.d(TAG, "GPIO Name :" + gpio.getName() + "   Value: " + gpio.getValue());
             } catch (IOException e) {
                 e.printStackTrace();
             }
