@@ -25,8 +25,9 @@ import java.util.Locale;
 public class MainActivity extends Activity {
     private String TAG = "MainActivity";
     private Gpio mGpio;
+    //Pico i.MX7 Dual Development board 对应40针脚，不同开发版针脚不同
     private String pinInput = "GPIO6_IO14";
-    // [GPIO1_IO10, GPIO2_IO00, GPIO2_IO01, GPIO2_IO02, GPIO2_IO03, GPIO2_IO05, GPIO2_IO07, GPIO5_IO00, GPIO6_IO12, GPIO6_IO13, GPIO6_IO14, GPIO6_IO15]
+    //[GPIO1_IO10, GPIO2_IO00, GPIO2_IO01, GPIO2_IO02, GPIO2_IO03, GPIO2_IO05, GPIO2_IO07, GPIO5_IO00, GPIO6_IO12, GPIO6_IO13, GPIO6_IO14, GPIO6_IO15]
     GpioCallback callback = new GpioCallback() {
         @Override
         public boolean onGpioEdge(Gpio gpio) {
@@ -60,11 +61,9 @@ public class MainActivity extends Activity {
             mGpio.setDirection(Gpio.DIRECTION_IN);
             //mGpio.setActiveType(Gpio.ACTIVE_LOW);
             mGpio.setEdgeTriggerType(Gpio.EDGE_BOTH);
-
             mGpio.registerGpioCallback(callback);
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d(TAG, e.getMessage());
         }
     }
 
@@ -82,6 +81,4 @@ public class MainActivity extends Activity {
         }
         mGpio.unregisterGpioCallback(callback);
     }
-
-
 }
