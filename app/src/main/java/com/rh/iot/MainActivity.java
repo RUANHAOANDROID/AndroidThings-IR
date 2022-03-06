@@ -1,11 +1,10 @@
 package com.rh.iot;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -15,7 +14,6 @@ import com.google.android.things.pio.PeripheralManager;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Date: 2022/3/6
@@ -23,6 +21,7 @@ import java.util.Locale;
  * #
  */
 public class MainActivity extends Activity {
+    ImageView imageView;
     private String TAG = "MainActivity";
     private Gpio mGpio;
     //Pico i.MX7 Dual Development board 对应40针脚，不同开发版针脚不同
@@ -31,8 +30,18 @@ public class MainActivity extends Activity {
     GpioCallback callback = new GpioCallback() {
         @Override
         public boolean onGpioEdge(Gpio gpio) {
+
             try {
                 Log.d(TAG, "GPIO Name :" + gpio.getName() + "   Value: " + gpio.getValue());
+
+                boolean isShow = gpio.getValue();
+                runOnUiThread(() -> {
+                    if (isShow) {
+                        imageView.setVisibility(View.VISIBLE);
+                    } else {
+                        imageView.setVisibility(View.GONE);
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -49,6 +58,8 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        imageView = findViewById(R.id.img);
+        imageView.setImageDrawable(getDrawable(R.drawable.ic_baseline_emoji_people_24));
         PeripheralManager peripheralManager = PeripheralManager.getInstance();
         List<String> portList = peripheralManager.getGpioList();
         if (portList.isEmpty()) {
